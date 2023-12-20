@@ -2,8 +2,9 @@
 #define ARRAYLIST_H_
 
 /*
-This is created by Yeaseen Arafat.
-/*
+Yeaseen Arafat created this.
+*/
+
 #include <string>
 #include <iostream>
 #include <sstream>
