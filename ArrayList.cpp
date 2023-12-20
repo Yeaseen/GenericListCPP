@@ -3,39 +3,55 @@
 
 int main(){
 
-    ArrayList myList;
+    // Create an ArrayList instance
+    ArrayList originalList;
+    originalList.add(42);
+    originalList.add("Hello");
+    originalList.printAvalue(1);
+    originalList.add(3.14);
+    originalList.add(2.79f);
+    cout << "Original List Size: " << originalList.getSize() << "\n";
+    cout << "The capacity of Original List is: " << originalList.getCapacity() << endl;
 
-    myList.add(12);
-    myList.add(12.345);
-    myList.add(12.11f);
-    myList.add("Its high time ...");
-    myList.add(53);
+    // Use the copy constructor to create a new instance from the original
+    ArrayList copiedList(originalList);
 
-    cout << "The capacity of the list is: " << myList.getCapacity() << endl;
-    cout << "The size of the list is: " << myList.getSize() << endl;
-    myList.printALL();
+    // Use the assignment operator to create another instance from the original
+    ArrayList assignedList;
+    assignedList = originalList;
 
-    cout<<endl;
+    // Display the contents of the original, copied, and assigned lists
+    cout << "Original List:" << std::endl;
+    originalList.printALL();
 
-    myList.printAvalue(2);
+    cout << "\nCopied List:" << std::endl;
+    copiedList.printALL();
 
-    cout<<endl;
+    cout << "\nAssigned List:" << std::endl;
+    assignedList.printALL();
+    
+    originalList.removeAtId(2);
+    cout << "Original List Size: " << originalList.getSize() << "\n";
+    cout << "The capacity of Original List is: " << originalList.getCapacity() << endl;
+    
+    cout << "Original List:" << std::endl;
+    originalList.printALL();
 
-    myList.removeAtId(0);
+    cout << "\nCopied List:" << std::endl;
+    copiedList.printALL();
 
-    cout << "The capacity of the list is: " << myList.getCapacity() << endl;
-    cout << "The size of the list is: " << myList.getSize() << endl;
-    myList.printALL();
+    cout << "\nAssigned List:" << std::endl;
+    assignedList.printALL();
+    
+    assignedList.reverseArray();
+    cout << "\nReveresed Assigned List:" << std::endl;
+    assignedList.printALL();
+    
+    assignedList.move(0,2);
+    cout << "\nAfter Switching 0th and 2nd value Reveresed List:" << std::endl;
+    assignedList.printALL();
+    
+    assignedList.move(0,4);
 
-    if(myList.move(0,2)) cout<<"Move is done successfully";
-    else cout<<"Move is not applicable";
-
-    myList.printALL();
-
-    myList.reverseArray();
-
-    myList.printALL();
-
-
-
+    return 0;
 }
