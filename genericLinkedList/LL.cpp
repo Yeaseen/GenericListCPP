@@ -1,11 +1,3 @@
-/******************************************************************************
-
-                              Online C++ Compiler.
-               Code, Compile, Run and Debug C++ program online.
-Write your code in this editor and press "Run" button to compile and execute it.
-
-*******************************************************************************/
-
 #include <iostream>
 #include <sstream>
 #include <cstdlib>
@@ -34,8 +26,34 @@ public:
     ArrayList() : head(nullptr), currentSize(0), freeList(nullptr) {}
 
     ~ArrayList() {
-        clear();
+      clearLists();
     }
+    
+    // Copy Constructor
+    ArrayList(const ArrayList& other) : head(nullptr), currentSize(0), freeList(nullptr) {
+    // Copy elements from the other list to this list
+    Node* currentOther = other.head;
+    while (currentOther) {
+        add(currentOther->data);
+        currentOther = currentOther->next;
+    }
+}
+
+// Assignment Operator
+ArrayList& operator=(const ArrayList& other) {
+    if (this != &other) {
+        // Clear existing data in this list
+        clear();
+
+        // Copy elements from the other list to this list
+        Node* currentOther = other.head;
+        while (currentOther) {
+            add(currentOther->data);
+            currentOther = currentOther->next;
+        }
+    }
+    return *this;
+}
 
     void add(const MultiType& element) {
         Node* newNode = getFreeNode();
@@ -73,18 +91,6 @@ public:
         return currentSize;
     }
     
-    void reverseList(){
-      Node* prev=nullptr;
-      while(head != nullptr){
-          Node* nxt = head->next;
-          head->next = prev;
-          prev = head;
-          head = nxt;
-      }
-
-      head = prev;
-
-    }
     
     
     void printAvalue(int id) const {
@@ -109,7 +115,40 @@ public:
     cout << endl;
     for(int i=0; i<currentSize; i++){
         printAvalue(i);
+        
     }
+    }
+    void reverseList(){
+      Node* prev=nullptr;
+      while(head != nullptr){
+          Node* nxt = head->next;
+          head->next = prev;
+          prev = head;
+          head = nxt;
+      }
+
+      head = prev;
+
+    }
+    
+   void concat(const ArrayList& second) {
+    Node* secondHead = second.head;
+    if (!secondHead) return;
+    
+    if (!head) {
+        // If the first list is empty, simply update the head to the head of the second list
+        head = secondHead;
+        currentSize = second.currentSize;
+        return;
+    }
+
+    
+    Node* track = head;
+    while (track->next) {
+        track = track->next;
+    }
+    track->next = secondHead;
+    currentSize += second.currentSize;
 }
 
 private:
@@ -130,19 +169,32 @@ private:
         return nullptr;
     }
 
-    void clear() {
+    void addToFreeList(Node* node) {
+        // Add the node to the free list
+        node->next = freeList;
+        freeList = node;
+    }
+    
+    
+    
+  void clearLists() {
+        // Clear linked list
         while (head) {
             Node* temp = head;
             head = head->next;
             addToFreeList(temp);
         }
-        currentSize = 0;
-    }
 
-    void addToFreeList(Node* node) {
-        // Add the node to the free list
-        node->next = freeList;
-        freeList = node;
+        // Clear free list
+        while (freeList) {
+            Node* temp = freeList;
+            freeList = freeList->next;
+            delete temp;
+        }
+    }
+    void clear() {
+        clearLists();
+        currentSize = 0;
     }
 };
 
@@ -151,12 +203,12 @@ private:
 int main(){
 
 
-  cout<<"Hello LL!"<<endl;
-  ArrayList myList;
+  
+    ArrayList myList;
 
-    myList.add(42);
-    myList.add("Hello");
-    myList.add(3.14f);
+    myList.add(56);
+    myList.add("My Boy");
+    myList.add(2.79f);
 
     cout << "List Size: " << myList.getSize() << endl;
 
@@ -167,7 +219,36 @@ int main(){
 
     cout << "List Size after removal: " << myList.getSize() << endl;
 
+    // Reverse the list
+    myList.reverseList();
 
+    cout << "Reversed List:" << endl;
+    myList.printALL();
+    
+    
+     // Create the original list
+    ArrayList originalList;
+    originalList.add(42);
+    originalList.add("Hello");
+    originalList.add(3.14f);
+
+    cout << "Original List:" << endl;
+    originalList.printALL();
+
+    // Test copy constructor
+    ArrayList copiedList = originalList;
+    cout << "Copied List:" << endl;
+    copiedList.printALL();
+
+    // Test assignment operator
+    ArrayList assignedList;
+    assignedList = originalList;
+    cout << "Assigned List:" << endl;
+    assignedList.printALL();
+    
+    assignedList.concat(myList);
+    cout << "Concated Assigned List with Original List:" << endl;
+    assignedList.printALL();
 
   return 0;
 }
