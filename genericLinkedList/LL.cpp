@@ -92,7 +92,7 @@ ArrayList& operator=(const ArrayList& other) {
     }
     
     
-    
+    /*
     void printAvalue(int id) const {
         const MultiType* element = this->gets(id);
         if (element) {
@@ -117,7 +117,45 @@ ArrayList& operator=(const ArrayList& other) {
         printAvalue(i);
         
     }
+    }*/
+    
+    
+    void printNodeValue(const Node* node) const {
+    if (node) {
+        const MultiType& element = node->data;
+        if (holds_alternative<int>(element)) {
+            cout << "Data Type: int ------  Data value: " << get<int>(element) << '\n';
+        } else if (holds_alternative<string>(element)) {
+            cout << "Data Type: string ------  Data value: " << get<string>(element) << '\n';
+        } else if (holds_alternative<float>(element)) {
+            cout << "Data Type: float ------  Data value: " << get<float>(element) << '\n';
+        } else if (holds_alternative<double>(element)) {
+            cout << "Data Type: double ------  Data value: " << get<double>(element) << '\n';
+        }
+    } else {
+        cout << "Node is null." << '\n';
     }
+}
+    
+    void printALL() const {
+    cout << endl;
+    Node* current = head;
+    while (current) {
+        const MultiType& element = current->data;
+        if (holds_alternative<int>(element)) {
+            cout << "Data Type: int ------  Data value: " << get<int>(element) << '\n';
+        } else if (holds_alternative<string>(element)) {
+            cout << "Data Type: string ------  Data value: " << get<string>(element) << '\n';
+        } else if (holds_alternative<float>(element)) {
+            cout << "Data Type: float ------  Data value: " << get<float>(element) << '\n';
+        } else if (holds_alternative<double>(element)) {
+            cout << "Data Type: double ------  Data value: " << get<double>(element) << '\n';
+        }
+        current = current->next;
+    }
+}
+    
+    
     void reverseList(){
       Node* prev=nullptr;
       while(head != nullptr){
@@ -150,6 +188,20 @@ ArrayList& operator=(const ArrayList& other) {
     track->next = secondHead;
     currentSize += second.currentSize;
 }
+    void printMiddleNode(){
+        if(!head) cout<<"No element at all"<<endl;
+        if(!head->next) printNodeValue(head);
+        
+        Node* slow=head;
+        Node* fast=head;
+        
+        while(fast && fast->next){
+            fast= fast->next->next;
+            slow= slow->next;
+        }
+        
+        printNodeValue(slow);
+    }
 
 private:
     Node* getNodeAtIndex(int index) const {
@@ -225,12 +277,16 @@ int main(){
     cout << "Reversed List:" << endl;
     myList.printALL();
     
+    cout<<"Middle Node of myList is: ";
+    myList.printMiddleNode();
+    
     
      // Create the original list
     ArrayList originalList;
     originalList.add(42);
     originalList.add("Hello");
     originalList.add(3.14f);
+    
 
     cout << "Original List:" << endl;
     originalList.printALL();
@@ -249,6 +305,8 @@ int main(){
     assignedList.concat(myList);
     cout << "Concated Assigned List with Original List:" << endl;
     assignedList.printALL();
+    cout<<"Middle Node of assignedList is: ";
+    assignedList.printMiddleNode();
 
   return 0;
 }
